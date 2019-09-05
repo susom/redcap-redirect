@@ -2,11 +2,9 @@
 A method to handle outdated REDCap version urls and automagically redirect users to the indended resource
 
 ## About
-If you upgrade REDCap often, you will start to accumulate many versions of REDCap code on your web server.  If someone hits a file via a bookmark from an older version of REDCap, the software will automatically redirect the request to the currently installed version.  However, if you ever remove old versions of REDCap, which may be done out of securty concerns or due to simple house cleaning, an older url will not resolve and the user will receive a 404 Error message.
+If you upgrade REDCap often, you will start to accumulate many versions of REDCap code on your web server.  If someone hits a file via a bookmark from an older version of REDCap, the software will automatically redirect the request to the currently installed version.  However, if you ever remove old versions of REDCap from the webserver (which may be done out of securty concerns or due to simple house cleaning) an older url will not resolve and the user will receive a 404 Error message.
 
-These method is intended to solve thisproblem where an end-user bookmarks a REDCap url that contains a version number that is no longer on your server.  Some admins prefer to periodically remove older, outdated versions of REDCap from the web server.  If there is a saved link that contains an outdated version number, the server will return a 404 error.
-
-This script works by using Apache's mod_rewrite and a php script to 'fix' these outdated urls.
+These method is intended to solve this problem and redirect users to the intended page.  It uses Apache's mod_rewrite and a php script to 'fix' these outdated urls and as such will only work for users of Apache (v2.4 or greater with mod_rewrite installed).
 
 ## How it works
 If your apache server receives a request for a url that isn't on disk AND the url looks like a REDap url, it will try to replace the version in the url to match the current version as defined in your database.
