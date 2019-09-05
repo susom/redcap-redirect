@@ -1,7 +1,10 @@
-# redcap-redirect
-A few files to handle outdated and removed redcap version numbers in urls
+# REDCap Redirect
+A method to handle outdated REDCap version urls and automagically redirect users to the indended resource
 
-These script is intended to solve the problem where an end-user bookmarks a REDCap url that contains a version number that is no longer on your server.  Some admins prefer to periodically remove older, outdated versions of REDCap from the web server.  If there is a saved link that contains an outdated version number, the server will return a 404 error.
+## About
+If you upgrade REDCap often, you will start to accumulate many versions of REDCap code on your web server.  If someone hits a file via a bookmark from an older version of REDCap, the software will automatically redirect the request to the currently installed version.  However, if you ever remove old versions of REDCap, which may be done out of securty concerns or due to simple house cleaning, an older url will not resolve and the user will receive a 404 Error message.
+
+These method is intended to solve thisproblem where an end-user bookmarks a REDCap url that contains a version number that is no longer on your server.  Some admins prefer to periodically remove older, outdated versions of REDCap from the web server.  If there is a saved link that contains an outdated version number, the server will return a 404 error.
 
 This script works by using Apache's mod_rewrite and a php script to 'fix' these outdated urls.
 
