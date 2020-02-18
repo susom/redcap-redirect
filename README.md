@@ -21,6 +21,7 @@ The rewrite rule finds that /redcap_v8.1.0/index.php is NOT a valid file but has
 
 ## How to install
 1. Copy the redcap_redirect.php script into your redcap webroot directory.  It should sit along-side `database.php`, `cron.php`, etc...
+### Apache Install
 1. Edit your apache configuration to include a block of mod_rewrite code.  This can be done either with a .htaccess file placed in your webroot or by modifying the actual `.conf` file for your site.  The code should look like:
 ```
 <IfModule mod_rewrite.c>
@@ -34,7 +35,27 @@ The rewrite rule finds that /redcap_v8.1.0/index.php is NOT a valid file but has
     RewriteRule "^(.+)$"   "/redcap_redirect.php"   [PT,L]
 </IfModule>
 ```
+
 1. Please note that if your redcap webroot directory is not the same as the server's document root then you may need to modify the `RewriteRule...` line above and prefix the path to redcap_redirect.php with your REDCap's document root.  For example, if your redcap base-server url is `https://www.school.edu/redcap/` then you may need to make the third argument to the rewrite rule look as `"/redcap/redcap_redirect.php"`.
+
+### IIS Install
+(reported by Tony Jin here: https://community.projectredcap.org/questions/73262/redirect-to-latest-version-of-redcap.html?childToView=78819#answer-78819 ) 
+
+```
+<rewrite>
+	<rules>
+		<rule name="redirect redcap old version paths" enabled="true" stopProcessing="true">
+			<match url="^(.+)$" />
+			<conditions>
+				<add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+				<add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+				<add input="{REQUEST_URI}" pattern="^.*\/redcap_v(\d+\.\d+\.\d+)\/.*$" />
+			</conditions>
+			<action type="Rewrite" url="/redcap_redirect.php" appendQueryString="false" />
+		</rule>
+	</rules>
+</rewrite>
+```
 
 ## Requirements
 This will only work on servers running Apache 2.4 or higher with the mod_rewrite module enabled.
