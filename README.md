@@ -38,6 +38,20 @@ The rewrite rule finds that /redcap_v8.1.0/index.php is NOT a valid file but has
 
 1. Please note that if your redcap webroot directory is not the same as the server's document root then you may need to modify the `RewriteRule...` line above and prefix the path to redcap_redirect.php with your REDCap's document root.  For example, if your redcap base-server url is `https://www.school.edu/redcap/` then you may need to make the third argument to the rewrite rule look as `"/redcap/redcap_redirect.php"`.
 
+#### Requirements
+This will only work on servers running Apache 2.4 or higher with the mod_rewrite module enabled.
+
+#### How can I tell if mod_rewrite is enabled?
+Create a php page as:
+```php
+<?php
+phpinfo();
+```
+and in the result you should see mod_rewrite.  If it is not enabled, you may have to enable it.  In my case this was done with
+```
+a2enmod rewrite
+```
+
 ### IIS Install
 (reported by Tony Jin here: https://community.projectredcap.org/questions/73262/redirect-to-latest-version-of-redcap.html?childToView=78819#answer-78819 ) 
 
