@@ -4,7 +4,7 @@
  * REDCap REDIRECT
  * 
  * Author: Andrew Martin (andy123@stanford.edu)
- * Addtions by: Tony Jin (Tony.Jin@stonybrookmedicine.edu)
+ * Additions by: Tony Jin (Tony.Jin@stonybrookmedicine.edu)
  *              Andy Arenson (aarenson@iu.edu)
  *
  * This script is used in conjunction with an apache mod_rewrite rule to automatically fix outdated REDCap URLs
