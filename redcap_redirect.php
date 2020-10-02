@@ -4,6 +4,8 @@
  * REDCap REDIRECT
  * 
  * Author: Andrew Martin (andy123@stanford.edu)
+ * Addtions by: Tony Jin (Tony.Jin@stonybrookmedicine.edu)
+ *              Andy Arenson (aarenson@iu.edu)
  *
  * This script is used in conjunction with an apache mod_rewrite rule to automatically fix outdated REDCap URLs
  *
@@ -21,7 +23,7 @@
         # Check that the requested URI looks like a REDCap URI
         RewriteCond %{REQUEST_URI} "^.*\/redcap_v(\d+\.\d+\.\d+)\/.*$"
         # Redirect to this script to handle the version substitution
-        RewriteRule "^(.+)$"     "/redcap_redirect.php"   [PT,L]
+        RewriteRule "^(.+)$"     "/redcap_redirect.php"   [PT,L,NS]
      </IfModule>
 
  * Note: if your redcap server is not installed in the DOCUMENT_ROOT, then you may need to modify the RewriteRule line
@@ -38,10 +40,10 @@ require_once("redcap_connect.php");
 /* @var string $redcap_version */
 global $homepage_contact_email, $redcap_version;
 
-$requestUri = $_SERVER['REQUEST_URI'];
+$requestUri = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
 
 // Check the redirectURL for a redcap version - https://regex101.com/r/jisap2/1
-$re = '/^(.*\/redcap_v)(\d+\.\d+\.\d+)(\/.*)(\?.*)$/';
+$re = '/^(.*\/redcap_v)(\d+\.\d+\.\d+)(\/.*?)(\?.*)*$/';
 preg_match($re, $requestUri, $uriMatches);
 $uriVersion = empty($uriMatches[2]) ? NULL : $uriMatches[2];
 
