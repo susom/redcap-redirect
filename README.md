@@ -32,7 +32,7 @@ The rewrite rule finds that /redcap_v8.1.0/index.php is NOT a valid file but has
     # Check that the requested URI looks like a REDCap URI
     RewriteCond %{REQUEST_URI} "^.*\/redcap_v(\d+\.\d+\.\d+)\/.*$"
     # Redirect to this script to handle the version substitution
-    RewriteRule "^(.+)$"   "/redcap_redirect.php"   [PT,L]
+    RewriteRule "^(.+)$"   "/redcap_redirect.php"   [PT,L,NS]
 </IfModule>
 ```
 
