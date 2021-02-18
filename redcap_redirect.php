@@ -38,6 +38,8 @@ require_once("redcap_connect.php");
 
 /* @var string $homepage_contact_email */
 /* @var string $redcap_version */
+/* @var string $redcap_base_url */	
+global $homepage_contact_email, $redcap_version, $redcap_base_url; // Add $redcap_base_url to enable Return to Home Page btn for installations under "/redcap/redcap_v#."
 global $homepage_contact_email, $redcap_version;
 
 $requestUri = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
@@ -72,7 +74,18 @@ if (!empty($uriVersion) && ($uriVersion !== $redcap_version)) {
 http_response_code(404);
 $HtmlPage = new HtmlPage();
 $HtmlPage->PrintHeaderExt();
-$fullUrl = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'] . $requestUri;
+	
+// Get Server Request scheme ('http' vs 'https') - TJ
+if ( (! empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https') ||	
+     (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||	
+     (! empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') ) {	
+    $server_request_scheme = 'https';	
+} else {	
+    $server_request_scheme = 'http';	
+}
+
+$fullUrl = $server_request_scheme . "://" . $_SERVER['SERVER_NAME'] . $requestUri;
+
 $mailUrl = "mailto:$homepage_contact_email?subject=Invalid-404-Url&body=" .
     rawurlencode(htmlspecialchars_decode( "The following url was not found:\n\n" . $fullUrl . "\n\n"));
 
@@ -94,7 +107,7 @@ $mailUrl = "mailto:$homepage_contact_email?subject=Invalid-404-Url&body=" .
         </table>
         <hr class="my-4">
         <p class="lead">
-            <a class="btn btn-danger text-white btn-lg mr-2" href="/" role="button">Return to Home Page</a>
+            <a class="btn btn-danger text-white btn-lg mr-2" href="<?php echo $redcap_base_url ?>" role="button">Return to Home Page</a>
             <a class="btn btn-danger text-white btn-lg" target="_BLANK" href="<?php echo $mailUrl ?>" role="button">Contact Us</a>
         </p>
     </div>
