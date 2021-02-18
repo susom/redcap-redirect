@@ -44,7 +44,7 @@ global $homepage_contact_email, $redcap_version,
 
 $requestUri = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
 
-// Check the redirectURL for a redcap version - https://regex101.com/r/jisap2/1
+// Check the redirectURL for a redcap version - https://regex101.com/r/q7oCR5/1
 $re = '/^(.*\/redcap_v)(\d+\.\d+\.\d+)(\/.*?)(\?.*)*$/';
 preg_match($re, $requestUri, $uriMatches);
 $uriVersion = empty($uriMatches[2]) ? NULL : $uriMatches[2];
