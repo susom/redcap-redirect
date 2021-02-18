@@ -39,8 +39,8 @@ require_once("redcap_connect.php");
 /* @var string $homepage_contact_email */
 /* @var string $redcap_version */
 /* @var string $redcap_base_url */	
-global $homepage_contact_email, $redcap_version, $redcap_base_url; // Add $redcap_base_url to enable Return to Home Page btn for installations under "/redcap/redcap_v#."
-global $homepage_contact_email, $redcap_version;
+global $homepage_contact_email, $redcap_version,
+	$redcap_base_url; // Enables the "Return to Home Page" button to work on installations served from "/redcap/" instead of the webroot "/".
 
 $requestUri = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
 
@@ -75,7 +75,7 @@ http_response_code(404);
 $HtmlPage = new HtmlPage();
 $HtmlPage->PrintHeaderExt();
 	
-// Get Server Request scheme ('http' vs 'https') - TJ
+// Get Server Request scheme ('http' vs 'https')
 if ( (! empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https') ||	
      (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ||	
      (! empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443') ) {	
