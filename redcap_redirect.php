@@ -24,6 +24,10 @@
         RewriteCond %{REQUEST_URI} "^.*\/redcap_v(\d+\.\d+\.\d+)\/.*$"
         # Redirect to this script to handle the version substitution
         RewriteRule "^(.+)$"     "/redcap_redirect.php"   [PT,L,NS]
+
+        #Optional: Uncomment to also redirect links with "/redcap_latest/" instead of a version...
+        #RewriteCond %{REQUEST_URI} "^.*\/redcap_latest\/.*$"
+        #RewriteRule "^(.+)$"     "/redcap_redirect.php"   [PT,L,NS]
      </IfModule>
 
  * Note: if your redcap server is not installed in the DOCUMENT_ROOT, then you may need to modify the RewriteRule line
@@ -44,16 +48,22 @@ global $homepage_contact_email, $redcap_version,
 
 $requestUri = filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_URL);
 
-// Check the redirectURL for a redcap version - https://regex101.com/r/q7oCR5/1
-$re = '/^(.*\/redcap_v)(\d+\.\d+\.\d+)(\/.*?)(\?.*)*$/';
+// Check the redirectURL for a redcap version or the string "redcap_latest" - https://regex101.com/r/q7oCR5/1
+$re = '/^(.*\/redcap_)(v\d+\.\d+\.\d+)(\/.*?)(\?.*)*$/';
 preg_match($re, $requestUri, $uriMatches);
 $uriVersion = empty($uriMatches[2]) ? NULL : $uriMatches[2];
 
-// See if we have a version in the url and it is not current
-if (!empty($uriVersion) && ($uriVersion !== $redcap_version)) {
+if (empty($uriMatches)) {
+  $re = '/^(.*\/redcap_)(latest)(\/.*?)(\?.*)*$/';
+  preg_match($re, $requestUri, $uriMatches);
+  $uriVersion = empty($uriMatches[2]) ? NULL : $uriMatches[2];
+}
+
+// See if we have a version in the url and it is not current (or the string "latest")
+if ((!empty($uriVersion) && ($uriVersion !== $redcap_version)) || $uriVersion == 'latest') {
 
     // Rebuild the new url with the current db version
-    $newUrl = $uriMatches[1] . $redcap_version . $uriMatches[3];
+    $newUrl = $uriMatches[1] . "v" . $redcap_version . $uriMatches[3];
 
     // Build the server path to the url
     $newUrlPath = $_SERVER['DOCUMENT_ROOT'] . $newUrl;
