@@ -84,7 +84,7 @@ if ( (! empty($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'http
     $server_request_scheme = 'http';	
 }
 
-$fullUrl = $server_request_scheme . "://" . $_SERVER['SERVER_NAME'] . $requestUri;
+$fullUrl = $server_request_scheme . "://" . $_SERVER['HTTP_HOST'] . $requestUri;
 
 $mailUrl = "mailto:$homepage_contact_email?subject=Invalid-404-Url&body=" .
     rawurlencode(htmlspecialchars_decode( "The following url was not found:\n\n" . $fullUrl . "\n\n"));
