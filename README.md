@@ -52,6 +52,36 @@ and in the result you should see mod_rewrite.  If it is not enabled, you may hav
 a2enmod rewrite
 ```
 
+### NGINX on Azure Install
+*Based on this [Microsoft Blog post](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/configure-nginx-for-php-8-linux-azure-app-service/ba-p/3069373) and [Tony Jin's comments in REDCap Community](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/configure-nginx-for-php-8-linux-azure-app-service/ba-p/3069373).*
+
+1. Using SSH session, copy default file from **/etc/nginx/sites-enabled/default** to the **/home** folder:
+   ```
+   cp /etc/nginx/sites-enabled/default /home/default
+   ```
+2. Edit using VI or download default and modify it there.
+3. Make these edits to default as suggested by Tony.Jin: "As for the NGINX config, we simply added try_files $uri redcap_redirect.php to the two "location" blocks below"
+   ```
+   location / {
+   # ... other configs... #
+   try_files $uri $uri/ /redcap_redirect.php;
+   }
+   ```
+   and
+   ```
+   location ~ [^/]\.php(/|$) {
+   # ... other configs... #
+   try_files $uri /redcap_redirect.php;
+   }
+   ```   
+   
+4. Save your edits back to the **default** file in the **home** folder.
+5. Open the REDCap Web App in the Azure portal and navigate to the **Configuration page** (under Settings).
+6. Click on **General Settings** and add the following to the Startup Command textbox and click Save:
+   ```
+   cp /home/default /etc/nginx/sites-enabled/default; service nginx restart
+   ```      
+
 ### IIS Install
 (reported by Tony Jin here: https://community.projectredcap.org/questions/73262/redirect-to-latest-version-of-redcap.html?childToView=78819#answer-78819 ) 
 
