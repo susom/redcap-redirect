@@ -52,7 +52,7 @@ and in the result you should see mod_rewrite.  If it is not enabled, you may hav
 a2enmod rewrite
 ```
 
-### NGINX on Azure Install
+### NGINX on Azure Managed Web App Install
 *Based on this [Microsoft Blog post](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/configure-nginx-for-php-8-linux-azure-app-service/ba-p/3069373) and [Tony Jin's comments in REDCap Community](https://techcommunity.microsoft.com/t5/apps-on-azure-blog/configure-nginx-for-php-8-linux-azure-app-service/ba-p/3069373).*
 
 1. Using SSH session, copy default file from **/etc/nginx/sites-enabled/default** to the **/home** folder:
