@@ -84,8 +84,24 @@ a2enmod rewrite
 7. Restart the Web App to apply the config.
 
 ### IIS Install
-(reported by Tony Jin here: https://community.projectredcap.org/questions/73262/redirect-to-latest-version-of-redcap.html?childToView=78819#answer-78819 ) 
 
+(reported by Tony Jin here: https://redcap.vumc.org/community/post.php?id=73262)
+
+#### Requirements
+
+- IIS 7.5 or later
+- URL Rewrite Module 2.x
+  - https://www.iis.net/downloads/microsoft/url-rewrite
+- PHP configured as a FastCGI handler in IIS
+- `redcap_redirect.php` present in the REDCap web root
+
+#### How to install
+
+1. Ensure `redcap_redirect.php` is present in your REDCap web root
+1. Place `web.config` in the REDCap web root
+   - Note: If the REDCap URL is not at the web root (i.e. `<webroot>/redcap/`), then an adjustment to the rewrite action is necessary (i.e. `url="/redcap/redcap_redirect.php"`).  This process is documented directly in the `web.config`.
+
+#### Example
 ```
 <rewrite>
 	<rules>
@@ -96,6 +112,7 @@ a2enmod rewrite
 				<add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
 				<add input="{REQUEST_URI}" pattern="^.*\/redcap_v(\d+\.\d+\.\d+)\/.*$" />
 			</conditions>
+			<!-- Change the url value if REDCap is in a sub-directory, e.g. url="/redcap/redcap_redirect.php" -->
 			<action type="Rewrite" url="/redcap_redirect.php" appendQueryString="false" />
 		</rule>
 	</rules>
