@@ -14,6 +14,8 @@ If your apache server receives a request for a url that isn't on disk AND the ur
 The rewrite rule finds that /redcap_v8.1.0/index.php is NOT a valid file but has a 'redcap_vx.y.z' in it so it passes it to the redcap_redirect.php script which queries the database and determines that your redcap version is actually 9.2.5.  So, it redirects the user to:
 `https://redcap.stanford.edu/redcap_v9.2.5/index.php?pid=10601`
 
+- If uncommented, URLs like `https://redcap.stanford.edu/redcap_latest/index.php?pid=10601` will also get redirected to the redcap_redirect.php script
+
 - If a url does NOT contain redcap_vx.y.z the rewrite rule will not take effect and the user will get the default Apache 404 error.
 
 - If a url redcap version is updated, but the file with the new version does not exist, the user will get a nice custom 404 error message:
@@ -33,6 +35,11 @@ The rewrite rule finds that /redcap_v8.1.0/index.php is NOT a valid file but has
     RewriteCond %{REQUEST_URI} "^.*\/redcap_v(\d+\.\d+\.\d+)\/.*$"
     # Redirect to this script to handle the version substitution
     RewriteRule "^(.+)$"   "/redcap_redirect.php"   [PT,L,NS]
+
+    #Optional: Uncomment to also redirect links with "/redcap_latest/" instead of a version...
+    #RewriteCond %{REQUEST_URI} "^.*\/redcap_latest\/.*$"
+    #RewriteRule "^(.+)$"     "/redcap_redirect.php"   [PT,L,NS]
+
 </IfModule>
 ```
 
